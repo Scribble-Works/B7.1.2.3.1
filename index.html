@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arithmetic Ascent</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>⛰️ Arithmetic Ascent ⛰️</h1>
+        
+        <div class="score-board">
+            Score: <span id="score">0</span> | Level: <span id="level">1</span> | Lives: <span id="lives-span">3</span> 
+        </div>
+        
+        <hr>
+
+        <div class="progress-container">
+            <p>Level Progress: <span id="progress-text">0 / 10</span></p>
+            <div id="level-progress-bar" class="progress-bar-shell">
+                </div>
+        </div>
+
+        <hr>
+
+        <div class="problem-area">
+            <p id="math-problem">Click Start to begin!</p>
+            <input type="number" id="user-answer" placeholder="Your Answer">
+            <button id="submit-btn">Submit Answer</button>
+        </div>
+
+        <p id="feedback" class="feedback-message"></p>
+        
+        <button id="start-btn" class="main-btn">Start Game</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
