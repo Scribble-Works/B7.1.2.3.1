@@ -1,254 +1,190 @@
-// --- Game Variables ---
-let currentAnswer = 0;
+// Initialize audio
+const correctSound = new Audio('assets/brass-fanfare-reverberated-146263.mp3');
+const wrongSound = new Audio('assets/cartoon-fail-trumpet-278822.mp3');
+
+// 10 Questions
+const questions = [
+    {
+        model: '<div class="group"><span class="item">🟢</span><span class="item">🟢</span></div><div class="group"><span class="item">🟢</span><span class="item">🟢</span></div><div class="group"><span class="item">🟢</span><span class="item">🟢</span></div><div class="group"><span class="item">🟢</span><span class="item">🟢</span></div>',
+        caption: "8 bottle tops in 4 pairs",
+        options: ["A) 2³", "B) 3²"],
+        correct: "A",
+        correctAnswer: "2³",
+        explanation: "We have 8 tops. This is made by multiplying 2 × 2 × 2. The factor 2 is used 3 times, so it's 2³."
+    },
+    {
+        model: '<div class="bundle">🟫🟫🟫</div><div class="bundle">🟫🟫🟫</div><div class="bundle">🟫🟫🟫</div>',
+        caption: "9 sticks in 3 bundles of 3",
+        options: ["A) 2⁴", "B) 3²"],
+        correct: "B",
+        correctAnswer: "3²",
+        explanation: "3 bundles of 3 sticks = 3 × 3 = 9. When a number is multiplied by itself, we write it as a square: 3²."
+    },
+    {
+        model: '<div class="grid5x5"><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span></div>',
+        caption: "25 bottle tops in a 5×5 array",
+        options: ["A) 5²", "B) 2⁵"],
+        correct: "A",
+        correctAnswer: "5²",
+        explanation: "5 rows of 5 tops = 5 × 5 = 25. This is 5 squared, written as 5²."
+    },
+    {
+        model: '<div class="small-group">🟢🟢</div><div class="small-group">🟢🟢</div><div class="small-group">🟢🟢</div><div class="small-group">🟢🟢</div><div class="small-group">🟢🟢</div><div class="small-group">🟢🟢</div><div class="small-group">🟢🟢</div><div class="small-group">🟢🟢</div>',
+        caption: "16 bottle tops in 8 pairs",
+        options: ["A) 4²", "B) 2⁴"],
+        correct: "B",
+        correctAnswer: "2⁴",
+        explanation: "Each pair is 2. We double 2 four times: 2 → 4 → 8 → 16. So 2 × 2 × 2 × 2 = 2⁴."
+    },
+    {
+        model: '<div class="group"><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span></div><div class="group"><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span></div>',
+        caption: "6 bottle tops in 2 groups of 3",
+        options: ["A) 3 × 2", "B) 2 × 3"],
+        correct: "A",
+        correctAnswer: "3 × 2",
+        explanation: "There are 2 groups of 3 tops. This is 3 + 3 = 3 × 2. The repeated factor here is 3, used 2 times."
+    },
+    {
+        model: '<div class="bundle">🟫🟫</div><div class="bundle">🟫🟫</div><div class="bundle">🟫🟫</div><div class="bundle">🟫🟫</div>',
+        caption: "8 sticks in 4 bundles of 2",
+        options: ["A) 2³", "B) 4²"],
+        correct: "A",
+        correctAnswer: "2³",
+        explanation: "4 bundles of 2 = 2 × 4, and 4 = 2 × 2, so total = 2 × 2 × 2 = 2³."
+    },
+    {
+        model: '<div class="group"><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span></div>',
+        caption: "4 bottle tops in 1 group",
+        options: ["A) 4", "B) 2²"],
+        correct: "B",
+        correctAnswer: "2²",
+        explanation: "4 can be expressed as 2 × 2. That’s 2 repeated twice → 2²."
+    },
+    {
+        model: '<div class="bundle">🟫🟫🟫🟫</div><div class="bundle">🟫🟫🟫🟫</div><div class="bundle">🟫🟫🟫🟫</div>',
+        caption: "12 sticks in 3 bundles of 4",
+        options: ["A) 3 × 4", "B) 2² × 3"],
+        correct: "B",
+        correctAnswer: "2² × 3",
+        explanation: "Each bundle has 4 sticks, and 4 = 2 × 2 = 2². So total = 2² × 3."
+    },
+    {
+        model: '<div class="small-group">🟢🟢🟢</div><div class="small-group">🟢🟢🟢</div><div class="small-group">🟢🟢🟢</div>',
+        caption: "9 bottle tops in 3 groups of 3",
+        options: ["A) 3²", "B) 9"],
+        correct: "A",
+        correctAnswer: "3²",
+        explanation: "3 groups of 3 = 3 × 3 = 9. This is 3 multiplied by itself → 3²."
+    },
+    {
+        model: '<div class="group"><span class="item">🟢</span><span class="item">🟢</span></div><div class="group"><span class="item">🟢</span><span class="item">🟢</span></div>',
+        caption: "4 bottle tops in 2 pairs",
+        options: ["A) 2²", "B) 4"],
+        correct: "A",
+        correctAnswer: "2²",
+        explanation: "2 pairs of 2 = 2 × 2 = 4. The factor 2 is used twice → 2²."
+    }
+];
+
+let currentQuestion = 0;
 let score = 0;
-let level = 1;
-let lives = 3; 
-let questionsAnsweredInLevel = 0; 
-const QUESTIONS_PER_LEVEL = 10; 
-const MAX_LEVEL = 2; // Game ends after level 2
-let gameActive = false;
 
-// --- DOM Elements ---
-const problemDisplay = document.getElementById('math-problem');
-const answerInput = document.getElementById('user-answer');
-const submitBtn = document.getElementById('submit-btn');
+// DOM Elements
+const introScreen = document.getElementById('intro-screen');
+const cardScreen = document.getElementById('card-screen');
+const finalScreen = document.getElementById('final-screen');
 const startBtn = document.getElementById('start-btn');
-const scoreSpan = document.getElementById('score');
-const levelSpan = document.getElementById('level');
-const feedbackDiv = document.getElementById('feedback');
-const livesSpan = document.getElementById('lives-span'); 
-const progressBarShell = document.getElementById('level-progress-bar'); // The container
-const progressText = document.getElementById('progress-text'); // Progress text (0/10)
+const restartBtn = document.getElementById('restart-btn');
+const currentEl = document.getElementById('current');
+const cardInner = document.getElementById('card-inner');
+const cardFront = document.getElementById('card-front');
+const cardBack = document.getElementById('card-back');
 
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    correctSound.load();
+    wrongSound.load();
+    startBtn.addEventListener('click', startQuiz);
+    restartBtn.addEventListener('click', restartQuiz);
+});
 
-// --- Utility Functions ---
-
-/**
- * Generates a random number in the range [min, max].
- */
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+function startQuiz() {
+    introScreen.classList.remove('active');
+    cardScreen.classList.add('active');
+    currentQuestion = 0;
+    score = 0;
+    loadQuestion();
 }
 
-/**
- * Initializes the progress bar with 10 empty segments.
- */
-function initializeProgressBar() {
-    progressBarShell.innerHTML = ''; // Clear any previous segments
-    for (let i = 0; i < QUESTIONS_PER_LEVEL; i++) {
-        const segment = document.createElement('div');
-        segment.classList.add('progress-segment');
-        // Give each segment an ID based on its index (0 to 9)
-        segment.id = `segment-${i}`; 
-        progressBarShell.appendChild(segment);
-    }
-}
-
-/**
- * Generates a problem strictly adhering to B71.2.2.2 (Multi-digit by 1- or 2-digit).
- */
-function generateProblem() {
-    // 1. Determine size of the first number (Multi-digit: 3 or 4 digits)
-    const firstNumDigits = (level === 2) ? getRandomInt(3, 4) : 3; // Increase complexity in Level 2
-    let num1Min = (firstNumDigits === 3) ? 100 : 1000;
-    let num1Max = (firstNumDigits === 3) ? 999 : 9999;
-    
-    // 2. Determine size of the second number (1- or 2-digit)
-    const secondNumDigits = (level === 2) ? getRandomInt(1, 2) : 1; 
-    let num2Min = (secondNumDigits === 1) ? 2 : 10;
-    let num2Max = (secondNumDigits === 1) ? 9 : 99;
-
-    // 3. Select operator (50/50 split)
-    const operator = ['×', '÷'][getRandomInt(0, 1)]; 
-
-    let num1, num2, answer, problemString;
-
-    if (operator === '×') {
-        num1 = getRandomInt(num1Min, num1Max);
-        num2 = getRandomInt(num2Min, num2Max);
-        answer = num1 * num2;
-    } else { // Division (ensure clean integer answer)
-        let quotient = getRandomInt(5, 50); 
-        num2 = getRandomInt(num2Min, num2Max);
-
-        num1 = quotient * num2; 
-        answer = quotient;
-
-        // Re-check: Ensure num1 is still multi-digit 
-        while (num1 < 100) { 
-            quotient = getRandomInt(10, 100);
-            num1 = quotient * num2;
-            answer = quotient;
-        }
-    }
-
-    problemString = `${num1} ${operator} ${num2} = ?`;
-    currentAnswer = answer;
-    problemDisplay.textContent = problemString;
-    answerInput.value = ''; // Clear previous input
-    feedbackDiv.textContent = '';
-    answerInput.focus();
-}
-
-/**
- * Manages game flow (Level Up / Game Over) and handles coloring of the progress bar segments.
- * @param {boolean} isCorrect - Status of the last answer.
- */
-function updateProgress(isCorrect) {
-    // Determine which segment to color (0-based index of the segment just completed)
-    const segmentIndex = questionsAnsweredInLevel - 1; 
-    const currentSegment = document.getElementById(`segment-${segmentIndex}`);
-    
-    // 1. Apply Color Feedback to the segment
-    if (currentSegment) {
-        if (isCorrect) {
-            currentSegment.classList.add('segment-correct');
-        } else {
-            currentSegment.classList.add('segment-incorrect');
-        }
-    }
-
-    // 2. Update Progress Text
-    progressText.textContent = `${questionsAnsweredInLevel} / ${QUESTIONS_PER_LEVEL}`;
-
-    // 3. Check for Level Completion
-    if (questionsAnsweredInLevel >= QUESTIONS_PER_LEVEL) {
-        
-        if (level < MAX_LEVEL) {
-            // Level UP
-            level++;
-            levelSpan.textContent = level;
-            questionsAnsweredInLevel = 0; // Reset progress
-            feedbackDiv.textContent = `🎉 Level ${level - 1} Complete! Starting Level ${level}! 🎉`;
-            
-            // Wait, then reset bar structure and generate new problem
-            setTimeout(() => {
-                initializeProgressBar(); // Reset the bar structure for the new level
-                generateProblem();
-            }, 2000); 
-
-        } else {
-            // Final Level Complete - Game Over (Win)
-            gameOver(true); 
-        }
-    } else {
-        // If not level complete, just generate the next problem
-        generateProblem();
-    }
-}
-
-/**
- * Checks the user's answer against the correct answer.
- */
-function checkAnswer() {
-    if (!gameActive) return;
-
-    const userAnswer = parseInt(answerInput.value, 10);
-
-    if (isNaN(userAnswer)) {
-        feedbackDiv.textContent = "Please enter a number.";
+function loadQuestion() {
+    if (currentQuestion >= questions.length) {
+        showFinalScreen();
         return;
     }
 
-    if (userAnswer === currentAnswer) {
-        // ✅ Correct Answer (Gain point, advance progress)
-        score++;
-        questionsAnsweredInLevel++; 
-        feedbackDiv.textContent = "✅ Correct! Progressing...";
-        scoreSpan.textContent = score;
-        
-        // Pass 'true' (correct) to updateProgress
-        setTimeout(() => updateProgress(true), 1000); 
+    const q = questions[currentQuestion];
+    currentEl.textContent = currentQuestion + 1;
 
-    } else {
-        // ❌ Incorrect Answer: DEDUCT POINT, DEDUCT LIFE, ADVANCE PROGRESS
-        
-        // 1. DEDUCT POINT
-        if (score > 0) { 
-            score--;
-            scoreSpan.textContent = score;
-        }
-        
-        // 2. ADVANCE PROGRESS (Uses up one of the 10 questions)
-        questionsAnsweredInLevel++; 
-        
-        // 3. DEDUCT LIFE
-        lives--;
-        livesSpan.textContent = lives;
+    // Render FRONT
+    cardFront.innerHTML = `
+        <h3>Which expression matches this model?</h3>
+        <div class="model">${q.model}</div>
+        <p><em>${q.caption}</em></p>
+        <div class="options">
+            <button class="option-btn" data-choice="A">${q.options[0]}</button>
+            <button class="option-btn" data-choice="B">${q.options[1]}</button>
+        </div>
+    `;
 
-        if (lives <= 0) {
-            // Color the final segment immediately before game over
-            updateProgress(false); 
-            gameOver(false); 
-            return; 
-        }
+    // Render BACK (will be shown after flip)
+    cardBack.innerHTML = `
+        <h3>Correct: <span style="color:#2e7d32">${q.correctAnswer}</span></h3>
+        <div class="explanation">${q.explanation}</div>
+        <p class="feedback" id="feedback">...</p>
+    `;
 
-        feedbackDiv.textContent = `❌ Incorrect. The answer was ${currentAnswer}. You lost 1 point and 1 life. ${lives} ${lives === 1 ? 'life' : 'lives'} remaining.`;
-        
-        // Pass 'false' (incorrect) to updateProgress
-        setTimeout(() => updateProgress(false), 2000); 
-    }
+    // Reset flip
+    cardInner.style.transform = 'rotateY(0deg)';
+
+    // Add event listeners to front buttons
+    cardFront.querySelectorAll('.option-btn').forEach(btn => {
+        btn.onclick = () => {
+            const isCorrect = btn.dataset.choice === q.correct;
+            if (isCorrect) score++;
+
+            // Update feedback on back
+            const feedbackEl = document.getElementById('feedback');
+            feedbackEl.textContent = isCorrect ? "✅ Correct!" : "❌ Good try!";
+            feedbackEl.style.color = isCorrect ? "#2e7d32" : "#c62828";
+
+            // Flip card
+            setTimeout(() => {
+                cardInner.style.transform = 'rotateY(180deg)';
+            }, 50);
+
+            // Play sound and advance
+            setTimeout(() => {
+                const sound = isCorrect ? correctSound : wrongSound;
+                sound.currentTime = 0;
+                sound.play().catch(() => {});
+
+                setTimeout(() => {
+                    currentQuestion++;
+                    loadQuestion();
+                }, 1000);
+            }, 300);
+        };
+    });
 }
 
-
-/**
- * Ends the game and displays the final score.
- * @param {boolean} didWin - True if the game ended by completing all levels.
- */
-function gameOver(didWin) {
-    gameActive = false;
-    
-    if (didWin) {
-        problemDisplay.textContent = `🏆 CONGRATULATIONS! You Mastered the Levels! Final Score: ${score}.`;
-        feedbackDiv.textContent = "You successfully completed all levels!";
-    } else {
-        problemDisplay.textContent = `❌ GAME OVER! You reached Level ${level} with a score of ${score}.`;
-        feedbackDiv.textContent = "Better luck next time! Click Start Game to try again.";
-    }
-
-    // Hide input/submit and show start button
-    startBtn.style.display = 'inline-block';
-    submitBtn.style.display = 'none';
-    answerInput.style.display = 'none';
+function showFinalScreen() {
+    cardScreen.classList.remove('active');
+    finalScreen.classList.add('active');
+    document.getElementById('final-score').textContent = 
+        `You got ${score} out of ${questions.length} correct!`;
 }
 
-/**
- * Initializes the game state.
- */
-function startGame() {
-    score = 0;
-    level = 1;
-    lives = 3; 
-    questionsAnsweredInLevel = 0; // Reset progress
-    gameActive = true;
-    
-    scoreSpan.textContent = score;
-    levelSpan.textContent = level;
-    livesSpan.textContent = lives;
-    
-    // Show game elements
-    startBtn.style.display = 'none';
-    submitBtn.style.display = 'inline-block';
-    answerInput.style.display = 'inline-block';
-    
-    feedbackDiv.textContent = 'Solve the problem and fill the progress bar!';
-    
-    // Initialize bar structure and generate the first problem
-    initializeProgressBar();
-    updateProgress(false); // Called initially just to generate the first problem and set text 0/10
+function restartQuiz() {
+    finalScreen.classList.remove('active');
+    startQuiz();
 }
-
-// --- Event Listeners ---
-startBtn.addEventListener('click', startGame);
-submitBtn.addEventListener('click', checkAnswer);
-
-// Allow pressing Enter key to submit
-answerInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        checkAnswer();
-    }
-});
-
-// Initial state setup 
-submitBtn.style.display = 'none';
-answerInput.style.display = 'none';

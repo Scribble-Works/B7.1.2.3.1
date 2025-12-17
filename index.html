@@ -3,36 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arithmetic Ascent</title>
+    <title>Repeated Factors Quiz</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="game-container">
-        <h1> Arithmetic Ascent</h1>
-        
-        <div class="score-board">
-            Score: <span id="score">0</span> | Level: <span id="level">1</span> | Lives: <span id="lives-span">3</span> 
-        </div>
-        
-        <hr>
+    <div class="container">
+        <h1>Repeated Factors Quiz</h1>
+        <h2>B7.1.2.3.1: Illustrate with examples the meaning of repeated factors using counting objects such as bottle tops or bundle sticks.</h2>
 
-        <div class="progress-container">
-            <p>Level Progress: <span id="progress-text">0 / 10</span></p>
-            <div id="level-progress-bar" class="progress-bar-shell">
+        <!-- Intro Screen -->
+        <div id="intro-screen" class="screen active">
+            <p>You'll see 10 models using bottle tops (🟢) or bundle sticks (🟫).</p>
+            <p>For each, choose the correct repeated factor expression.</p>
+            <button id="start-btn">Start Quiz</button>
+        </div>
+
+        <!-- Card Screen -->
+        <div id="card-screen" class="screen">
+            <div id="counter">Question <span id="current">1</span> of 10</div>
+            
+            <div class="flip-card">
+                <div class="flip-card-inner" id="card-inner">
+                    <div class="flip-card-front" id="card-front"></div>
+                    <div class="flip-card-back" id="card-back"></div>
                 </div>
+            </div>
         </div>
 
-        <hr>
-
-        <div class="problem-area">
-            <p id="math-problem">Click Start to begin!</p>
-            <input type="number" id="user-answer" placeholder="Your Answer">
-            <button id="submit-btn">Submit Answer</button>
+        <!-- Final Screen -->
+        <div id="final-screen" class="screen">
+            <h2>Quiz Complete! 🌟</h2>
+            <p id="final-score"></p>
+            <button id="restart-btn">Play Again</button>
         </div>
-
-        <p id="feedback" class="feedback-message"></p>
-        
-        <button id="start-btn" class="main-btn">Start Game</button>
     </div>
 
     <script src="script.js"></script>
