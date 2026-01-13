@@ -1,190 +1,259 @@
-// Initialize audio
-const correctSound = new Audio('assets/brass-fanfare-reverberated-146263.mp3');
-const wrongSound = new Audio('assets/cartoon-fail-trumpet-278822.mp3');
-
-// 10 Questions
-const questions = [
+// Repeated factors problems with visual representations
+const problems = [
     {
-        model: '<div class="group"><span class="item">🟢</span><span class="item">🟢</span></div><div class="group"><span class="item">🟢</span><span class="item">🟢</span></div><div class="group"><span class="item">🟢</span><span class="item">🟢</span></div><div class="group"><span class="item">🟢</span><span class="item">🟢</span></div>',
-        caption: "8 bottle tops in 4 pairs",
-        options: ["A) 2³", "B) 3²"],
-        correct: "A",
-        correctAnswer: "2³",
-        explanation: "We have 8 tops. This is made by multiplying 2 × 2 × 2. The factor 2 is used 3 times, so it's 2³."
+        text: "There are 3 groups of bottle tops. Each group has 4 bottle tops.",
+        type: "bottle-tops",
+        groups: 3,
+        itemsPerGroup: 4,
+        options: ["3 + 4 = 7", "3 × 4 = 12", "4 × 3 = 12", "3 + 3 + 3 + 3 = 12"],
+        correct: 1
     },
     {
-        model: '<div class="bundle">🟫🟫🟫</div><div class="bundle">🟫🟫🟫</div><div class="bundle">🟫🟫🟫</div>',
-        caption: "9 sticks in 3 bundles of 3",
-        options: ["A) 2⁴", "B) 3²"],
-        correct: "B",
-        correctAnswer: "3²",
-        explanation: "3 bundles of 3 sticks = 3 × 3 = 9. When a number is multiplied by itself, we write it as a square: 3²."
+        text: "Bundle sticks are arranged in 5 groups with 2 sticks in each group.",
+        type: "bundle-sticks",
+        groups: 5,
+        itemsPerGroup: 2,
+        options: ["5 + 2 = 7", "5 × 2 = 10", "2 × 5 = 10", "2 + 2 + 2 + 2 + 2 = 10"],
+        correct: 1
     },
     {
-        model: '<div class="grid5x5"><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span></div>',
-        caption: "25 bottle tops in a 5×5 array",
-        options: ["A) 5²", "B) 2⁵"],
-        correct: "A",
-        correctAnswer: "5²",
-        explanation: "5 rows of 5 tops = 5 × 5 = 25. This is 5 squared, written as 5²."
+        text: "4 groups of bottle tops with 3 bottle tops in each group.",
+        type: "bottle-tops",
+        groups: 4,
+        itemsPerGroup: 3,
+        options: ["4 + 3 = 7", "4 × 3 = 12", "3 × 4 = 12", "3 + 3 + 3 + 3 = 12"],
+        correct: 1
     },
     {
-        model: '<div class="small-group">🟢🟢</div><div class="small-group">🟢🟢</div><div class="small-group">🟢🟢</div><div class="small-group">🟢🟢</div><div class="small-group">🟢🟢</div><div class="small-group">🟢🟢</div><div class="small-group">🟢🟢</div><div class="small-group">🟢🟢</div>',
-        caption: "16 bottle tops in 8 pairs",
-        options: ["A) 4²", "B) 2⁴"],
-        correct: "B",
-        correctAnswer: "2⁴",
-        explanation: "Each pair is 2. We double 2 four times: 2 → 4 → 8 → 16. So 2 × 2 × 2 × 2 = 2⁴."
+        text: "2 groups of bundle sticks with 6 sticks in each group.",
+        type: "bundle-sticks",
+        groups: 2,
+        itemsPerGroup: 6,
+        options: ["2 + 6 = 8", "2 × 6 = 12", "6 × 2 = 12", "6 + 6 = 12"],
+        correct: 1
     },
     {
-        model: '<div class="group"><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span></div><div class="group"><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span></div>',
-        caption: "6 bottle tops in 2 groups of 3",
-        options: ["A) 3 × 2", "B) 2 × 3"],
-        correct: "A",
-        correctAnswer: "3 × 2",
-        explanation: "There are 2 groups of 3 tops. This is 3 + 3 = 3 × 2. The repeated factor here is 3, used 2 times."
+        text: "6 groups of bottle tops with 2 bottle tops in each group.",
+        type: "bottle-tops",
+        groups: 6,
+        itemsPerGroup: 2,
+        options: ["6 + 2 = 8", "6 × 2 = 12", "2 × 6 = 12", "2 + 2 + 2 + 2 + 2 + 2 = 12"],
+        correct: 1
     },
     {
-        model: '<div class="bundle">🟫🟫</div><div class="bundle">🟫🟫</div><div class="bundle">🟫🟫</div><div class="bundle">🟫🟫</div>',
-        caption: "8 sticks in 4 bundles of 2",
-        options: ["A) 2³", "B) 4²"],
-        correct: "A",
-        correctAnswer: "2³",
-        explanation: "4 bundles of 2 = 2 × 4, and 4 = 2 × 2, so total = 2 × 2 × 2 = 2³."
+        text: "3 groups of bundle sticks with 5 sticks in each group.",
+        type: "bundle-sticks",
+        groups: 3,
+        itemsPerGroup: 5,
+        options: ["3 + 5 = 8", "3 × 5 = 15", "5 × 3 = 15", "5 + 5 + 5 = 15"],
+        correct: 1
     },
     {
-        model: '<div class="group"><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span><span class="item">🟢</span></div>',
-        caption: "4 bottle tops in 1 group",
-        options: ["A) 4", "B) 2²"],
-        correct: "B",
-        correctAnswer: "2²",
-        explanation: "4 can be expressed as 2 × 2. That’s 2 repeated twice → 2²."
+        text: "7 groups of bottle tops with 1 bottle top in each group.",
+        type: "bottle-tops",
+        groups: 7,
+        itemsPerGroup: 1,
+        options: ["7 + 1 = 8", "7 × 1 = 7", "1 × 7 = 7", "1 + 1 + 1 + 1 + 1 + 1 + 1 = 7"],
+        correct: 1
     },
     {
-        model: '<div class="bundle">🟫🟫🟫🟫</div><div class="bundle">🟫🟫🟫🟫</div><div class="bundle">🟫🟫🟫🟫</div>',
-        caption: "12 sticks in 3 bundles of 4",
-        options: ["A) 3 × 4", "B) 2² × 3"],
-        correct: "B",
-        correctAnswer: "2² × 3",
-        explanation: "Each bundle has 4 sticks, and 4 = 2 × 2 = 2². So total = 2² × 3."
+        text: "4 groups of bundle sticks with 4 sticks in each group.",
+        type: "bundle-sticks",
+        groups: 4,
+        itemsPerGroup: 4,
+        options: ["4 + 4 = 8", "4 × 4 = 16", "4 + 4 + 4 + 4 = 16", "4 × 4 = 16"],
+        correct: 1
     },
     {
-        model: '<div class="small-group">🟢🟢🟢</div><div class="small-group">🟢🟢🟢</div><div class="small-group">🟢🟢🟢</div>',
-        caption: "9 bottle tops in 3 groups of 3",
-        options: ["A) 3²", "B) 9"],
-        correct: "A",
-        correctAnswer: "3²",
-        explanation: "3 groups of 3 = 3 × 3 = 9. This is 3 multiplied by itself → 3²."
+        text: "2 groups of bottle tops with 8 bottle tops in each group.",
+        type: "bottle-tops",
+        groups: 2,
+        itemsPerGroup: 8,
+        options: ["2 + 8 = 10", "2 × 8 = 16", "8 × 2 = 16", "8 + 8 = 16"],
+        correct: 1
     },
     {
-        model: '<div class="group"><span class="item">🟢</span><span class="item">🟢</span></div><div class="group"><span class="item">🟢</span><span class="item">🟢</span></div>',
-        caption: "4 bottle tops in 2 pairs",
-        options: ["A) 2²", "B) 4"],
-        correct: "A",
-        correctAnswer: "2²",
-        explanation: "2 pairs of 2 = 2 × 2 = 4. The factor 2 is used twice → 2²."
+        text: "5 groups of bundle sticks with 3 sticks in each group.",
+        type: "bundle-sticks",
+        groups: 5,
+        itemsPerGroup: 3,
+        options: ["5 + 3 = 8", "5 × 3 = 15", "3 × 5 = 15", "3 + 3 + 3 + 3 + 3 = 15"],
+        correct: 1
     }
 ];
 
-let currentQuestion = 0;
-let score = 0;
-
-// DOM Elements
-const introScreen = document.getElementById('intro-screen');
-const cardScreen = document.getElementById('card-screen');
-const finalScreen = document.getElementById('final-screen');
+// DOM elements
+const startScreen = document.getElementById('start-screen');
+const activityScreen = document.getElementById('activity-screen');
+const gameOverScreen = document.getElementById('game-over-screen');
 const startBtn = document.getElementById('start-btn');
 const restartBtn = document.getElementById('restart-btn');
-const currentEl = document.getElementById('current');
-const cardInner = document.getElementById('card-inner');
-const cardFront = document.getElementById('card-front');
-const cardBack = document.getElementById('card-back');
+const problemText = document.getElementById('problem-text');
+const problemCount = document.getElementById('problem-count');
+const visualContainer = document.getElementById('visual-container');
+const optionsContainer = document.getElementById('options-container');
+const scoreElement = document.getElementById('score');
+const feedbackMessage = document.getElementById('feedback-message');
+const correctSound = document.getElementById('correctSound');
+const incorrectSound = document.getElementById('incorrectSound');
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    correctSound.load();
-    wrongSound.load();
-    startBtn.addEventListener('click', startQuiz);
-    restartBtn.addEventListener('click', restartQuiz);
-});
+// Game state
+let currentProblemIndex = 0;
+let score = 0;
+let selectedAnswer = null;
 
-function startQuiz() {
-    introScreen.classList.remove('active');
-    cardScreen.classList.add('active');
-    currentQuestion = 0;
+// Initialize game
+function initGame() {
+    currentProblemIndex = 0;
     score = 0;
-    loadQuestion();
+    showStartScreen();
 }
 
-function loadQuestion() {
-    if (currentQuestion >= questions.length) {
-        showFinalScreen();
-        return;
+// Show start screen
+function showStartScreen() {
+    startScreen.classList.remove('hidden');
+    activityScreen.classList.add('hidden');
+    gameOverScreen.classList.add('hidden');
+    resetButtons();
+}
+
+// Start the activity
+function startActivity() {
+    startScreen.classList.add('hidden');
+    activityScreen.classList.remove('hidden');
+    loadProblem();
+}
+
+// Load current problem
+function loadProblem() {
+    resetButtons();
+    const current = problems[currentProblemIndex];
+    problemText.textContent = current.text;
+    problemCount.textContent = currentProblemIndex + 1;
+    
+    // Display visual representation
+    displayVisual(current.type, current.groups, current.itemsPerGroup);
+    
+    // Display options
+    displayOptions(current.options);
+}
+
+// Display visual representation
+function displayVisual(type, groups, itemsPerGroup) {
+    visualContainer.innerHTML = '';
+    
+    for (let i = 0; i < groups; i++) {
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'group';
+        
+        for (let j = 0; j < itemsPerGroup; j++) {
+            const item = document.createElement('div');
+            if (type === 'bottle-tops') {
+                item.className = 'bottle-top';
+                item.textContent = '●';
+            } else {
+                item.className = 'bundle-stick';
+            }
+            groupDiv.appendChild(item);
+        }
+        
+        visualContainer.appendChild(groupDiv);
     }
+}
 
-    const q = questions[currentQuestion];
-    currentEl.textContent = currentQuestion + 1;
-
-    // Render FRONT
-    cardFront.innerHTML = `
-        <h3>Which expression matches this model?</h3>
-        <div class="model">${q.model}</div>
-        <p><em>${q.caption}</em></p>
-        <div class="options">
-            <button class="option-btn" data-choice="A">${q.options[0]}</button>
-            <button class="option-btn" data-choice="B">${q.options[1]}</button>
-        </div>
-    `;
-
-    // Render BACK (will be shown after flip)
-    cardBack.innerHTML = `
-        <h3>Correct: <span style="color:#2e7d32">${q.correctAnswer}</span></h3>
-        <div class="explanation">${q.explanation}</div>
-        <p class="feedback" id="feedback">...</p>
-    `;
-
-    // Reset flip
-    cardInner.style.transform = 'rotateY(0deg)';
-
-    // Add event listeners to front buttons
-    cardFront.querySelectorAll('.option-btn').forEach(btn => {
-        btn.onclick = () => {
-            const isCorrect = btn.dataset.choice === q.correct;
-            if (isCorrect) score++;
-
-            // Update feedback on back
-            const feedbackEl = document.getElementById('feedback');
-            feedbackEl.textContent = isCorrect ? "✅ Correct!" : "❌ Good try!";
-            feedbackEl.style.color = isCorrect ? "#2e7d32" : "#c62828";
-
-            // Flip card
-            setTimeout(() => {
-                cardInner.style.transform = 'rotateY(180deg)';
-            }, 50);
-
-            // Play sound and advance
-            setTimeout(() => {
-                const sound = isCorrect ? correctSound : wrongSound;
-                sound.currentTime = 0;
-                sound.play().catch(() => {});
-
-                setTimeout(() => {
-                    currentQuestion++;
-                    loadQuestion();
-                }, 1000);
-            }, 300);
-        };
+// Display options
+function displayOptions(options) {
+    optionsContainer.innerHTML = '';
+    options.forEach((option, index) => {
+        const optionBtn = document.createElement('button');
+        optionBtn.className = 'option-btn';
+        optionBtn.textContent = option;
+        optionBtn.addEventListener('click', () => selectAnswer(index));
+        optionsContainer.appendChild(optionBtn);
     });
 }
 
-function showFinalScreen() {
-    cardScreen.classList.remove('active');
-    finalScreen.classList.add('active');
-    document.getElementById('final-score').textContent = 
-        `You got ${score} out of ${questions.length} correct!`;
+// Reset option buttons
+function resetButtons() {
+    const buttons = optionsContainer.querySelectorAll('.option-btn');
+    buttons.forEach(btn => {
+        btn.classList.remove('selected');
+        btn.disabled = false;
+    });
+    selectedAnswer = null;
 }
 
-function restartQuiz() {
-    finalScreen.classList.remove('active');
-    startQuiz();
+// Play sound safely
+function playSound(audioElement) {
+    audioElement.currentTime = 0;
+    audioElement.play().catch(e => console.log("Audio play prevented:", e));
 }
+
+// Handle answer selection
+function selectAnswer(choiceIndex) {
+    if (selectedAnswer !== null) return;
+    selectedAnswer = choiceIndex;
+    
+    // Highlight selected button
+    const buttons = optionsContainer.querySelectorAll('.option-btn');
+    buttons[choiceIndex].classList.add('selected');
+    
+    // Disable all buttons
+    buttons.forEach(btn => btn.disabled = true);
+    
+    // Check answer
+    const current = problems[currentProblemIndex];
+    const isCorrect = choiceIndex === current.correct;
+    
+    if (isCorrect) {
+        score++;
+        playSound(correctSound);
+    } else {
+        playSound(incorrectSound);
+    }
+    
+    // Move to next problem or end activity
+    setTimeout(() => {
+        currentProblemIndex++;
+        if (currentProblemIndex < problems.length) {
+            loadProblem();
+        } else {
+            endActivity();
+        }
+    }, 1800);
+}
+
+// End the activity
+function endActivity() {
+    activityScreen.classList.add('hidden');
+    gameOverScreen.classList.remove('hidden');
+    
+    scoreElement.textContent = score;
+    
+    let feedback = '';
+    let feedbackClass = '';
+    
+    if (score >= 9) {
+        feedback = "Excellent! You understand repeated factors perfectly!";
+        feedbackClass = 'excellent';
+    } else if (score >= 7) {
+        feedback = "Great job! You can identify repeated factor arrangements well!";
+        feedbackClass = 'good';
+    } else if (score >= 5) {
+        feedback = "Good effort! Practice more repeated factor problems to improve.";
+        feedbackClass = 'practice';
+    } else {
+        feedback = "Keep practicing! Understanding repeated factors is fundamental to multiplication.";
+        feedbackClass = 'practice';
+    }
+    
+    feedbackMessage.textContent = feedback;
+    feedbackMessage.className = `feedback ${feedbackClass}`;
+}
+
+// Event listeners
+startBtn.addEventListener('click', startActivity);
+restartBtn.addEventListener('click', initGame);
+
+// Initialize the game
+initGame();
